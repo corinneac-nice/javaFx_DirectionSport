@@ -5,6 +5,7 @@ package sio.leo.javafx_directionsport;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import sio.leo.javafx_directionsport.modele.DAO_Utilisaleur;
@@ -46,12 +48,14 @@ public class PrimaryController implements Initializable{
 
     @FXML
     private TableView<Utilisation> tbv_Passage;
+    @FXML private TitledPane titledPaneRecap;
     
     @FXML 
-    private TableColumn <Utilisation, String> col_Achat; 
+    private TableColumn <Utilisation, LocalDate> col_Achat; 
+//     private TableColumn <Utilisation, String> col_Achat; 
     @FXML
-    private TableColumn <Utilisation, String> col_Passage;
-    
+    private TableColumn <Utilisation, LocalDate> col_Passage;
+//    private TableColumn <Utilisation, String> col_Passage;
     public ObservableList<Utilisation> data= FXCollections.observableArrayList();
     
     DAO_Utilisaleur daoUser =new DAO_Utilisaleur();  
@@ -70,18 +74,19 @@ public class PrimaryController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb) {
       
-         try {
+//         try {
+            //Initialise ComboBox des activités
              cmbActivités.setItems(lesActivites); //TODO récupérer activites dans la base
              cmbQte.setItems(lesQte);
              
-             //remplissage tableView
-             col_Achat.setCellValueFactory(new PropertyValueFactory<>("ach_date"));
-             col_Passage.setCellValueFactory(new PropertyValueFactory<>("dateutilisation"));
-             
-             tbv_Passage.setItems(daoPassage.getLesUtilisations("ADM10"));
-         } catch (SQLException ex) {
-             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
-         }
+//             //remplissage tableView
+//             col_Achat.setCellValueFactory(new PropertyValueFactory<>("ach_date"));
+//             col_Passage.setCellValueFactory(new PropertyValueFactory<>("dateutilisation"));
+//             
+//             tbv_Passage.setItems(daoPassage.getLesUtilisations("ADM10"));
+//         } catch (SQLException ex) {
+//             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+//         }
     }
     @FXML
     public void cmbActiviteClic(ActionEvent levenement){
@@ -100,6 +105,18 @@ public class PrimaryController implements Initializable{
              
          }
         
+    }
+    public void initTableView(MouseEvent event){
+        String id=txtId.getText();
+             //remplissage tableView
+             col_Achat.setCellValueFactory(new PropertyValueFactory<>("ach_date"));
+             col_Passage.setCellValueFactory(new PropertyValueFactory<>("dateutilisation"));
+             
+         try {
+             tbv_Passage.setItems(daoPassage.getLesUtilisations(id));
+         } catch (SQLException ex) {
+             Logger.getLogger(PrimaryController.class.getName()).log(Level.SEVERE, null, ex);
+         }
     }
     
     
